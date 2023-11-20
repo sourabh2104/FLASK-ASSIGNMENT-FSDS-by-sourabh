@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books CRUD</title>
+</head>
+<body>
+    <h1>Books CRUD</h1>
+
+    <!-- Display books -->
+    <h2>Books</h2>
+    <ul id="bookList">
+    </ul>
+
+    <!-- Add new book form -->
+    <h2>Add New Book</h2>
+    <form id="addBookForm">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required><br>
+
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="author" required><br>
+
+        <button type="button" onclick="addBook()">Add Book</button>
+    </form>
+
+    <script>
+        // Function to add a new book
+        function addBook() {
+            var title = document.getElementById('title').value;
+            var author = document.getElementById('author').value;
+
+            // Send a POST request to the API to add a new book
+            fetch('/books', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title: title, author: author })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Book added successfully!');
+                // Reload the page to update the book list
+                location.reload();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        // Function to display books
+        function displayBooks() {
+            // Send a GET request to the API to get the list of books
+            fetch('/books')
+            .then(response => response.json())
+            .then(data => {
+                var bookList = document.getElementById('bookList');
+                bookList.innerHTML = ''; // Clear the existing list
+
+                data.books.forEach(book => {
+                    var listItem = document.createElement('li');
+                    listItem.textContent = `${book.title} by ${book.author}`;
+                    bookList.appendChild(listItem);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        // Call the displayBooks function when the page loads
+        displayBooks();
+    </script>
+</body>
+</html>

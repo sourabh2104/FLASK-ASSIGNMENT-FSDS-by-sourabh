@@ -1,0 +1,29 @@
+
+<!doctype html>
+<html>
+<head>
+    <title>Chat Application</title>
+    <script src="https://cdn.socket.io/4.1.2/socket.io.min.js"></script>
+    <script type="text/javascript">
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        socket.on('message', function(message) {
+            var ul = document.getElementById('messages');
+            var li = document.createElement('li');
+            li.appendChild(document.createTextNode(message));
+            ul.appendChild(li);
+        });
+    </script>
+</head>
+<body>
+    <ul id="messages"></ul>
+    <input id="message_input" autocomplete="off">
+    <button onclick="sendMessage()">Send</button>
+    <script type="text/javascript">
+        function sendMessage() {
+            var message = document.getElementById('message_input').value;
+            socket.emit('message', message);
+            document.getElementById('message_input').value = '';
+        }
+    </script>
+</body>
+</html>

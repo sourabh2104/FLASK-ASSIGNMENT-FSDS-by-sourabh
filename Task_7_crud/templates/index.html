@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{% block title %}Item List{% endblock %}
+
+{% block content %}
+    <h1>Item List</h1>
+
+    <form action="/add" method="post">
+        <label for="item_name">Add Item:</label>
+        <input type="text" id="item_name" name="item_name" required>
+        <button type="submit">Add</button>
+    </form>
+
+    {% if items %}
+        <h2>Items:</h2>
+        <ul>
+            {% for item in items %}
+                <li>
+                    {{ item.name }}
+                    <a href="{{ url_for('delete_item', item_id=item.id) }}">Delete</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No items available.</p>
+    {% endif %}
+{% endblock %}

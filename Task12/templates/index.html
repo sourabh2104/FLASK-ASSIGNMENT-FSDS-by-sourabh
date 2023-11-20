@@ -1,0 +1,30 @@
+
+<!doctype html>
+<html>
+<head>
+    <title>Real-time Data Updates</title>
+    <script src="https://cdn.socket.io/4.1.2/socket.io.min.js"></script>
+    <script type="text/javascript">
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('connect', function() {
+            console.log('Connected to the WebSocket server');
+        });
+
+        socket.on('data_updated', function(data) {
+            // Handle the updated data received from the server
+            console.log('Data Updated:', data);
+            // Update the UI with the new data
+        });
+
+        // Function to send updated data to the server
+        function updateData() {
+            var newData = /* prepare your updated data */;
+            socket.emit('update_data', newData);
+        }
+    </script>
+</head>
+<body>
+    <!-- Your HTML content here -->
+</body>
+</html>
